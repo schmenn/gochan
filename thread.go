@@ -114,7 +114,7 @@ type ThreadList []ThreadListElement
 
 // ThreadListElement Element in ThreadList
 type ThreadListElement struct {
-	Page    uint     `json:"page"`
+	Page    uint                      `json:"page"`
 	Threads []ThreadListElementThread `json:"threads"`
 }
 

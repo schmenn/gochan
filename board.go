@@ -1,5 +1,11 @@
 package gochan
 
+import (
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
+)
+
 type falseBool uint8
 
 // BoardName Board Name
@@ -148,6 +154,30 @@ type BoardCooldowns struct {
 type BoardStructure struct {
 	Boards     []Board           `json:"boards"`
 	TrollFlags map[string]string `json:"troll_flags,omitempty"`
+}
+
+// UpdateBoards Updates the Client's board cache
+func (c *Client) UpdateBoards() error {
+	req, err := http.NewRequest("GET", BoardsEndpoint, nil)
+	if err != nil {
+		return err
+	}
+	res, err := c.httpClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+	var b BoardStructure
+	err = json.Unmarshal(body, &b)
+	if err != nil {
+		return err
+	}
+	c.Cache.Boards = b
+	return nil
 }
 
 func (f falseBool) Bool() bool {

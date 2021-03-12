@@ -12,7 +12,7 @@ type Catalog []CatalogElement
 
 // CatalogElement part of Catalog
 type CatalogElement struct {
-	Page    int64           `json:"page"`
+	Page    uint            `json:"page"`
 	Threads []CatalogThread `json:"threads"`
 }
 
